@@ -1,0 +1,15 @@
+{
+  "project": "${PROJECT_NAME}",
+  "index": "${PROJECT_NAME}-${date:yyyy-MM-dd}",
+  "timestamp": "${date:yyyy-MM-dd'T'HH:mm:ss.SSSZZ}",
+  "log_level": "${json:level}",
+  "thread": "${json:thread:name}",
+  "class_name": "${json:source:className}",
+  "line_number": "${json:source:lineNumber}",
+  "message": "${json:message}",
+  "stack_trace": "${json:exception:stackTrace:text}",
+  "trace": "${json:mdc:X-B3-TraceId}",
+  "span": "${json:mdc:X-B3-SpanId}",
+  "parent": "${json:mdc:X-B3-ParentSpanId}",
+  "user":"${json:mdc:X-B3-uId}"
+}

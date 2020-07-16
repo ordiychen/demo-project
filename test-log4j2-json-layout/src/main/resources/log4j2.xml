@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="OFF">
+    <properties>
+        <property name="logPath">logs</property>
+        <property name="logLevel">info</property>
+        <property name ="PROJECT_NAME" >spring-cloud-app-demo</property>
+    </properties>
+
+    <Appenders>
+         <!-- immediateFlush="false"  不会立即写盘 tail时可能有延时 -->
+        <RollingFile name="fileOut" filename="${logPath}/info.log" filepattern="${logPath}/%d{yyyy-MM-dd}-info.log"  immediateFlush="false" append="false">
+            <!-- complete="true"   Complete well-formed JSON    -->
+            <JsonLayout   complete="false" compact="true" eventEol="true"
+                        properties="false" locationInfo="false"
+                        includeStacktrace="true" stacktraceAsString="true"
+                        objectMessageAsJsonObject="true" >
+                <!--                <KeyValuePair key="StudytonightField" value="studytonightValue" />-->
+                <KeyValuePair key="project" value="${PROJECT_NAME}"/>
+                <KeyValuePair key="timestamp" value="${date:yyyy-MM-dd'T'HH:mm:ss.SSSZZ}" />
+
+                <KeyValuePair key="parent" value="$${ctx:X-B3-ParentSpanId}" />
+                <KeyValuePair key="span" value="$${ctx:X-B3-SpanId}" />
+                <KeyValuePair key="user" value="$${ctx:X-B3-uId}" />
+                <KeyValuePair key="trace" value="${ctx:X-B3-TraceId}" />
+                <KeyValuePair key="index" value="${PROJECT_NAME}-${date:yyyy-MM-dd}" />
+                <!-- location 记录消耗性能 -->
+                <KeyValuePair key="line_number" value="" />
+
+                <!-- docker id  docker部署使用-->
+                <!--                <KeyValuePair key="containerId" value="${docker:containerId}"/>-->
+                <!--                <KeyValuePair key="containerName" value="${docker:containerName}"/>-->
+                <!--                <KeyValuePair key="imageName" value="${docker:imageName}"/>-->
+            </JsonLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy modulate="true" interval="1"/>
+                <SizeBasedTriggeringPolicy size="1000MB"/>
+            </Policies>
+            <DefaultRolloverStrategy>
+                <Delete basePath="${logPath}" maxDepth="1">
+                    <IfFileName glob="*info.log*" />
+                    <IfLastModified age="30d" />
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+    <Root level="debug">
+        <AppenderRef ref="fileOut"/>
+    </Root>
+    </Loggers>
+</Configuration>

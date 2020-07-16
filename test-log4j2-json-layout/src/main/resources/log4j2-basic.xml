@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="OFF">
+    <properties>
+        <property name="logPath">logs</property>
+        <property name="logLevel">info</property>
+        <property name ="project" >spring-cloud-app-demo</property>
+    </properties>
+    <Appenders>
+        <Console name="console" target="SYSTEM_OUT">
+            <!-- complete="true"   Complete well-formed JSON    -->
+            <JsonLayout Encoding="utf-8" complete="false" compact="true" eventEol="true" properties="true"
+                        locationInfo="true"  includeStacktrace="true"
+                        stacktraceAsString="true"
+                        objectMessageAsJsonObject="true">
+                <KeyValuePair key="project" value="${project}"/>
+            </JsonLayout>
+        </Console>
+    </Appenders>
+
+    <Loggers>
+    <Logger name="com.github.ordiy" level="debug" additivity="false">
+        <AppenderRef ref="console"/>
+    </Logger>
+    <Root level="debug">
+        <AppenderRef ref="console"/>
+    </Root>
+    </Loggers>
+</Configuration>
